@@ -1,0 +1,8 @@
+/vendor/
+/.idea
+.idea/
+.idea/copyright/
+.idea/digest_auth.iml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/vcs.xml

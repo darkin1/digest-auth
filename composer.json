@@ -1,0 +1,14 @@
+{
+    "name": "darkin1/digest-auth",
+    "description": "Digest Authentication RFC 2617 for Lumen",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dariusz Ciesielski",
+            "email": "dciesielski87@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
