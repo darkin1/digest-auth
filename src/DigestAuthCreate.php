@@ -1,6 +1,8 @@
 <?php
 
 namespace Darkin1\DigestAuth;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Class DigestAuthCreate
@@ -11,20 +13,20 @@ class DigestAuthCreate
 
     /**
      * DigestAuthCreate constructor.
-     * @param $realm
      */
-    public function __construct($realm)
+    public function __construct()
     {
-        $this->realm = $realm;
+        $this->realm = config('digest-auth')['digest-realm'];
     }
 
     /**
-     *
+     * @param Request $request
+     * @return $this
      */
-    public function make($response)
+    public function make(Request $request)
     {
         return response('HTTP/1.0 401 Unauthorized', 401)
             ->header('WWW-Authenticate', 'Digest realm="' . $this->realm . '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($this->realm))
-            ->withHeaders($response->headers->all());
+            ->withHeaders($request->headers->all());
     }
 }

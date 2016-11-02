@@ -1,7 +1,3 @@
-# digest-auth
-
-
-
 Digest Authentication
 ===============
 

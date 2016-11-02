@@ -95,9 +95,11 @@ class DigestAuth
      *
      * `digest_auth_hash` must be `md5(sprintf('%s:%s:%s', $this->username, $realm, $password))` format
      *
+     * @param string $selectField
+     * @param string $usernameField
      * @return bool
      */
-    public function isValidDB()
+    public function isValidDB($selectField = 'digest_auth_hash', $usernameField = 'username')
     {
         $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
@@ -105,7 +107,7 @@ class DigestAuth
             return false;
         }
 
-        $agentDocument = Agent::select('digest_auth_hash')->where('username', $this->username)->first();
+        $agentDocument = Agent::select($selectField)->where($usernameField, $this->username)->first();
 
         if (!$agentDocument) {
             return false;
