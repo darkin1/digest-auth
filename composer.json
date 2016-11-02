@@ -1,14 +1,22 @@
 {
-    "name": "darkin1/digest-auth",
-    "description": "Digest Authentication RFC 2617 for Lumen",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Dariusz Ciesielski",
-            "email": "dciesielski87@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {}
+  "name": "darkin1/digest-auth",
+  "description": "Digest Authentication RFC 2617 for Lumen",
+  "keywords": ["laravel", "lumen", "digest auth", "digest authentication", "rfc2617"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dariusz Ciesielski",
+      "email": "dciesielski87@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Darkin1\\DigestAuth\\": "src/"
+    }
+  }
 }
+
