@@ -39,7 +39,7 @@ class DigestAuthMiddleware
 
         if (!$this->digestAuthService->isValidDB()) {//todo: config field
             return response('HTTP/1.0 401 Unauthorized', 401)
-                ->withHeaders($request->headers->all());
+                ->withHeaders(['WWW-Authenticate' => $request->headers->get('Authorization')]);
         }
 
         return $next($request);
