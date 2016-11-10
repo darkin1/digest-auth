@@ -1,7 +1,9 @@
 Digest Authentication
 ===============
 
-[![Latest Stable Version](http://img.shields.io/github/release/darkin1/digest-auth.svg)](https://packagist.org/packages/darkin1/digest-auth) [![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/dciesielski)
+[![Latest Stable Version](http://img.shields.io/github/release/darkin1/digest-auth.svg)](https://packagist.org/packages/darkin1/digest-auth) 
+[![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/dciesielski)
+[![Tests](https://travis-ci.org/darkin1/digest-auth.svg?branch=master)](https://travis-ci.org/darkin1/digest-auth)
 
 
 Digest Authentication RFC 2617 for Lumen 5.x
