@@ -21,7 +21,6 @@ class DigestAuthMiddleware
         $this->digestAuthService = $digestAuthService;
     }
 
-
     /**
      * Handle an incoming request.
      *
@@ -31,13 +30,13 @@ class DigestAuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-
-        if (!$this->digestAuthService->getDigest()) {
+        if (! $this->digestAuthService->getDigest()) {
             $dg = new DigestAuthCreate();
+
             return $dg->make($request);
         }
 
-        if (!$this->digestAuthService->isValidDB()) {//todo: config field
+        if (! $this->digestAuthService->isValidDB()) {//todo: config field
             return response('HTTP/1.0 401 Unauthorized', 401)
                 ->withHeaders(['WWW-Authenticate' => $request->headers->get('Authorization')]);
         }
