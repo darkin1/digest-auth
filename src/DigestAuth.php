@@ -2,69 +2,67 @@
 
 namespace Darkin1\DigestAuth;
 
-use App\Models\Agent;//todo:zxczxc
+use App\Models\Agent; //todo:zxczxc
 
 /**
- * Implementation of Digest Access Authentication - rfc2617
+ * Implementation of Digest Access Authentication - rfc2617.
  *
- * @package App\Classes
  *
  * @link http://php.net/manual/en/features.http-auth.php
  * @link https://tools.ietf.org/html/rfc2617
  */
 class DigestAuth
 {
-
     /**
-     * Nonce to discourage cryptanalysis
+     * Nonce to discourage cryptanalysis.
      *
      * @var string
      */
     private $nonce;
 
     /**
-     * nc
+     * nc.
      * @var string
      */
     private $nc;
 
     /**
-     * cnonce
+     * cnonce.
      *
      * @var string
      */
     private $cnonce;
 
     /**
-     * quality of protection
+     * quality of protection.
      *
      * @var string
      */
     private $qop;
 
     /**
-     * Name of user
+     * Name of user.
      *
      * @var string
      */
     private $username;
 
     /**
-     * Requested uri
+     * Requested uri.
      *
      * @var string
      */
     private $uri;
 
     /**
-     * Response
+     * Response.
      *
      * @var string
      */
     private $response;
 
     /**
-     * Creates a new instance
+     * Creates a new instance.
      */
     public function __construct()
     {
@@ -72,7 +70,7 @@ class DigestAuth
     }
 
     /**
-     * Checks for valid username & password
+     * Checks for valid username & password.
      *
      * @param  string $name
      * @param  string $password
@@ -91,7 +89,7 @@ class DigestAuth
     }
 
     /**
-     * Check if Digest Auth is valid using `digest_auth_hash` field for A1
+     * Check if Digest Auth is valid using `digest_auth_hash` field for A1.
      *
      * `digest_auth_hash` must be `md5(sprintf('%s:%s:%s', $this->username, $realm, $password))` format
      *
@@ -103,32 +101,32 @@ class DigestAuth
     {
         $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-        if (!$this->username) {
+        if (! $this->username) {
             return false;
         }
 
         $agentDocument = Agent::select($selectField)->where($usernameField, $this->username)->first();
 
-        if (!$agentDocument) {
+        if (! $agentDocument) {
             return false;
         }
 
         $A2 = md5(sprintf('%s:%s', $request_method, $this->uri));
         $response = md5(sprintf('%s:%s:%s:%s:%s:%s', $agentDocument->digest_auth_hash, $this->nonce, $this->nc, $this->cnonce, $this->qop, $A2));
 
-        return ($response == $this->response);
+        return $response == $this->response;
     }
 
     /**
-     * Parses the User Information from server variables
+     * Parses the User Information from server variables.
      * @return void
      */
     public function parse()
     {
         $digest = $this->getDigest();
 
-        $user = array();
-        $required = array('nonce' => 1, 'nc' => 1, 'cnonce' => 1, 'qop' => 1, 'username' => 1, 'uri' => 1, 'response' => 1);
+        $user = [];
+        $required = ['nonce' => 1, 'nc' => 1, 'cnonce' => 1, 'qop' => 1, 'username' => 1, 'uri' => 1, 'response' => 1];
         preg_match_all('@(\w+)=(?:(?:")([^"]+)"|([^\s,$]+))@', $digest, $matches, PREG_SET_ORDER);
 
         if (is_array($matches)) {
@@ -151,7 +149,7 @@ class DigestAuth
     }
 
     /**
-     * Fetch digest data from environment information
+     * Fetch digest data from environment information.
      *
      * @return string
      */
