@@ -32,7 +32,10 @@ Change your default settings in `app/config/digest-auth.php`:
 ```php
 <?php
 return [
-    'digest-realm' => env('DIGEST_REALM', '****'),
+    'realm' => env('DIGEST_REALM', '****'),
+    'user' => env('DIGEST_USER', '****'),
+    'password' => env('DIGEST_PASS', '****'),
+    'driver' => env('DIGEST_DRIVER', 'env'),
 ];
 ```
 
