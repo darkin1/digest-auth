@@ -71,7 +71,7 @@ class DigestAuth
     }
 
     /**
-     * Checks for valid username & password
+     * Checks for valid username & password.
      *
      * @return bool
      * @internal param string $name
@@ -102,13 +102,13 @@ class DigestAuth
     {
         $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-        if (!$this->username) {
+        if (! $this->username) {
             return false;
         }
 
         $agentDocument = Agent::select($selectField)->where($usernameField, $this->username)->first();
 
-        if (!$agentDocument) {
+        if (! $agentDocument) {
             return false;
         }
 
@@ -178,5 +178,4 @@ class DigestAuth
         return response('HTTP/1.0 401 Unauthorized', 401)
             ->withHeaders(['WWW-Authenticate' => $request->headers->get('Authorization')]);
     }
-
 }

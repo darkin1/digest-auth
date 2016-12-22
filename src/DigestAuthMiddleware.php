@@ -30,7 +30,7 @@ class DigestAuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$this->digestAuthService->getDigest()) {
+        if (! $this->digestAuthService->getDigest()) {
             $dg = new DigestAuthCreate();
 
             return $dg->make($request);
@@ -38,11 +38,11 @@ class DigestAuthMiddleware
 
         $config = config('digest-auth');
 
-        if ($config['driver'] == 'env' && !$this->digestAuthService->isValidEnv()) {
+        if ($config['driver'] == 'env' && ! $this->digestAuthService->isValidEnv()) {
             return $this->digestAuthService->unauthorized($request);
         }
 
-        if ($config['driver'] == 'db' && !$this->digestAuthService->isValidDb()) {
+        if ($config['driver'] == 'db' && ! $this->digestAuthService->isValidDb()) {
             return $this->digestAuthService->unauthorized($request);
         }
 
