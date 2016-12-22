@@ -2,7 +2,8 @@
 
 namespace Darkin1\DigestAuth;
 
-use App\Models\Agent; //todo:zxczxc
+use App\Models\Agent;
+use Illuminate\Http\Request;
 
 /**
  * Implementation of Digest Access Authentication - rfc2617.
@@ -70,22 +71,22 @@ class DigestAuth
     }
 
     /**
-     * Checks for valid username & password.
+     * Checks for valid username & password
      *
-     * @param  string $name
-     * @param  string $password
-     * @param $realm
      * @return bool
+     * @internal param string $name
+     * @internal param string $password
+     * @internal param $realm
      */
-    public function isValid($name, $password, $realm)
+    public function isValidEnv()
     {
         $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-        $A1 = md5(sprintf('%s:%s:%s', $this->username, $realm, $password));
+        $A1 = md5(sprintf('%s:%s:%s', $this->username, config('digest-auth')['realm'], config('digest-auth')['password']));
         $A2 = md5(sprintf('%s:%s', $request_method, $this->uri));
         $response = md5(sprintf('%s:%s:%s:%s:%s:%s', $A1, $this->nonce, $this->nc, $this->cnonce, $this->qop, $A2));
 
-        return ($response == $this->response) && ($name == $this->username);
+        return ($response == $this->response) && (config('digest-auth')['user'] == $this->username);
     }
 
     /**
@@ -97,17 +98,17 @@ class DigestAuth
      * @param string $usernameField
      * @return bool
      */
-    public function isValidDB($selectField = 'digest_auth_hash', $usernameField = 'username')
+    public function isValidDb($selectField = 'digest_auth_hash', $usernameField = 'username')
     {
         $request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-        if (! $this->username) {
+        if (!$this->username) {
             return false;
         }
 
         $agentDocument = Agent::select($selectField)->where($usernameField, $this->username)->first();
 
-        if (! $agentDocument) {
+        if (!$agentDocument) {
             return false;
         }
 
@@ -166,4 +167,16 @@ class DigestAuth
 
         return $digest;
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return $response
+     */
+    public function unauthorized(Request $request)
+    {
+        return response('HTTP/1.0 401 Unauthorized', 401)
+            ->withHeaders(['WWW-Authenticate' => $request->headers->get('Authorization')]);
+    }
+
 }
